@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: weather
+    description: Live weather operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /weather:
+    get:
+      operationId: getCurrentWeather
+      tags: [weather]
+      summary: Get current weather
+      description: Returns current Google Maps Platform Weather API conditions for a coordinate.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          schema:
+            type: number
+            minimum: -90
+            maximum: 90
+        - name: longitude
+          in: query
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [en, hi, bn]
+            default: en
+      responses:
+        "200":
+          description: Current weather conditions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeatherResponse"
+        "400":
+          description: Invalid coordinates
+        "503":
+          description: Weather service is not configured
+        "502":
+          description: Weather provider error
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    WeatherResponse:
+      type: object
+      properties:
+        temperatureC:
+          type: number
+        feelsLikeC:
+          type: number
+        description:
+          type: string
+        conditionType:
+          type: string
+        iconBaseUri:
+          type: string
+        humidity:
+          type: number
+        precipitationProbability:
+          type: number
+        windSpeedKph:
+          type: number
+        observedAt:
+          type: string
+        timeZone:
+          type: string
+      required:
+        - temperatureC
+        - feelsLikeC
+        - description
+        - conditionType
+        - iconBaseUri
+        - humidity
+        - precipitationProbability
+        - windSpeedKph
+        - observedAt
+        - timeZone
+

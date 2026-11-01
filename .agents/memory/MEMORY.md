@@ -1,0 +1,1 @@
+- [Firebase credential boundary](firebase-credential-boundary.md) — mobile bundles may use Firebase client config; Admin SDK service-account credentials must remain server-only.

@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "CropGuard AI"
+description = "A farmer-focused mobile companion for scanning crops with AI, monitoring field health, managing crops, estimating input costs, and connecting with agronomy experts."
+version = "1.0.0"
+id = "artifacts/cropguard-mobile"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 20502
+
+[services.development]
+run = "pnpm --filter @workspace/cropguard-mobile run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cropguard-mobile", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/cropguard-mobile", "run", "serve" ]
+
+[services.env]
+PORT = "20502"
+BASE_PATH = "/"
